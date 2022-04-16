@@ -23,9 +23,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    salt: string,
+    salt: String,
     role: {
-      type: string,
+      type: String,
       default: "subscriber",
     },
     resetPasswordLink: {
@@ -41,7 +41,7 @@ userSchema
   .virtual("password")
   .set(function (password) {
     this._password = password;
-    this.salt - this.makeSalt();
+    this.salt = this.makeSalt();
     this.hashed_password = this.encryptPassword(password);
   })
 
@@ -51,7 +51,7 @@ userSchema
 
 //methods
 userSchema.methods = {
-  authenticate: function (plaintext) {
+  authenticate: function (plainText) {
     return this.encryptPassword(plainText) == this.hashed_password;
   },
 
@@ -67,7 +67,7 @@ userSchema.methods = {
     }
   },
   makeSalt: function () {
-    return Match.round(new Date().valueOf() * Math.randomm()) + "";
+    return Math.round(new Date().valueOf() * Math.random()) + "";
   },
 };
 
